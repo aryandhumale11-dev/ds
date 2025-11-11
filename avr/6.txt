@@ -1,0 +1,192 @@
+#include <iostream> 
+#include <string> 
+using namespace std; 
+ 
+// Node representing each appointment 
+class Node { 
+public: 
+    int id; 
+    string name; 
+    string date; 
+    string time; 
+    Node* prev; 
+    Node* next; 
+ 
+    Node(int id, string name, string date, string time) { 
+        this->id = id; 
+        this->name = name; 
+        this->date = date; 
+        this->time = time; 
+        prev = nullptr; 
+        next = nullptr; 
+    } 
+}; 
+ 
+// Appointment Booking System using Doubly Linked List 
+class AppointmentSystem { 
+private: 
+    Node* head; 
+    Node* tail; 
+ 
+public: 
+    AppointmentSystem() { 
+        head = nullptr; 
+        tail = nullptr; 
+    } 
+ 
+    // Add new appointment 
+    void addAppointment(int id, string name, string date, string time) { 
+        Node* newNode = new Node(id, name, date, time); 
+ 
+        if (head == nullptr) { 
+            head = tail = newNode; 
+        } else { 
+            tail->next = newNode; 
+            newNode->prev = tail; 
+            tail = newNode; 
+        
+ } 
+ 
+        cout << "Appointment added successfully!\n"; 
+    } 
+ 
+    // Display all appointments 
+    void displayAppointments() { 
+        if (head == nullptr) { 
+            cout << "No appointments found.\n"; 
+            return; 
+        } 
+ 
+        Node* temp = head; 
+        cout << "\n--- Appointment List ---\n"; 
+        while (temp != nullptr) { 
+            cout << "Appointment ID: " << temp->id << "\n"; 
+            cout << "Patient Name: " << temp->name << "\n"; 
+            cout << "Date: " << temp->date << "\n"; 
+            cout << "Time: " << temp->time << "\n"; 
+            cout << "--------------------------\n"; 
+            temp = temp->next; 
+        } 
+    } 
+ 
+    // Search for an appointment by ID 
+    void searchAppointment(int id) { 
+       
+  Node* temp = head; 
+        while (temp != nullptr) { 
+            if (temp->id == id) { 
+                cout << "\nAppointment Found!\n"; 
+                cout << "Appointment ID: " << temp->id << "\n"; 
+                cout << "Patient Name: " << temp->name << "\n"; 
+                cout << "Date: " << temp->date << "\n"; 
+                cout << "Time: " << temp->time << "\n"; 
+                return; 
+            } 
+            temp = temp->next; 
+        } 
+        cout << "No appointment found with ID " << id << ".\n"; 
+    } 
+ 
+    // Delete appointment by ID 
+    void deleteAppointment(int id) { 
+        if (head == nullptr) { 
+            cout << "No appointments to delete.\n"; 
+            return; 
+        } 
+ 
+        Node* temp = head; 
+ 
+        // Search for appointment 
+        while (temp != nullptr && temp->id != id) { 
+            
+                 temp = temp->next; 
+        } 
+ 
+        if (temp == nullptr) { 
+            cout << "Appointment with ID " << id << " not found.\n"; 
+            return; 
+        } 
+ 
+        // Case 1: Deleting the first node 
+        if (temp == head) { 
+            head = head->next; 
+            if (head != nullptr) 
+                head->prev = nullptr; 
+            else 
+                tail = nullptr; // list became empty 
+        } 
+        // Case 2: Deleting the last node 
+        else if (temp == tail) { 
+            tail = tail->prev; 
+            tail->next = nullptr; 
+        } 
+        // Case 3: Deleting a middle node 
+        else { 
+            temp->prev->next = temp->next; 
+            temp->next->prev = temp->prev; 
+        } 
+ 
+        delete temp; 
+        cout << "Appointment deleted successfully!\n"; 
+    } 
+}; 
+ 
+int main() { 
+    AppointmentSystem system; 
+    int choice, id; 
+    string name, date, time; 
+ 
+    do { 
+        cout << "\n--- Appointment Booking System ---\n"; 
+        cout << "1. Add Appointment\n"; 
+        cout << "2. Display All Appointments\n"; 
+        cout << "3. Search Appointment\n"; 
+        cout << "4. Delete Appointment\n"; 
+        cout << "5. Exit\n"; 
+        cout << "Enter your choice: "; 
+        cin >> choice; 
+ 
+        switch (choice) { 
+        case 1: 
+            cout << "Enter Appointment ID: "; 
+            cin >> id; 
+            cin.ignore(); 
+            cout << "Enter Patient Name: "; 
+             
+            getline(cin, name); 
+            cout << "Enter Date (DD/MM/YYYY): "; 
+            getline(cin, date); 
+            cout << "Enter Time (HH:MM): "; 
+            getline(cin, time); 
+            system.addAppointment(id, name, date, time); 
+            break; 
+ 
+        case 2: 
+            system.displayAppointments(); 
+            break; 
+ 
+        case 3: 
+            cout << "Enter Appointment ID to search: "; 
+            cin >> id; 
+            system.searchAppointment(id); 
+            break; 
+ 
+        case 4: 
+            cout << "Enter Appointment ID to delete: "; 
+            cin >> id; 
+            system.deleteAppointment(id); 
+            break; 
+ 
+        case 5: 
+            cout << "Exiting... Thank you!\n"; 
+             
+            break; 
+ 
+        default: 
+            cout << "Invalid choice! Try again.\n"; 
+        } 
+ 
+    } while (choice != 5); 
+ 
+    return 0; 
+} 

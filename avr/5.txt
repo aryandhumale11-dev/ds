@@ -1,0 +1,168 @@
+#include <iostream> 
+#include <string> 
+using namespace std; 
+ 
+class Node { 
+public: 
+    int id; 
+    string name; 
+    string contact; 
+    Node* next; 
+ 
+    Node(int id, string name, string contact) { 
+        this->id = id; 
+        this->name = name; 
+        this->contact = contact; 
+        next = nullptr; 
+    } 
+}; 
+ 
+class PinnacleClub { 
+    Node* head; 
+ 
+public: 
+    PinnacleClub() { 
+        head = nullptr; 
+    } 
+ 
+    // Add new member 
+    void addMember(int id, string name, string contact) { 
+        Node* newNode = new Node(id, name, contact); 
+        if (head == nullptr) { 
+            head = newNode; 
+        } else { 
+            Node* temp = head; 
+            while (temp->next != nullptr) 
+                temp = temp->next; 
+            temp->next = newNode; 
+        } 
+        cout << "Member added successfully!\n"; 
+    } 
+ 
+    // Display all members 
+    void displayMembers() { 
+        if (head == nullptr) { 
+            cout << "No members in the club.\n"; 
+            return; 
+        } 
+        Node* temp = head; 
+        cout << "\n--- Pinnacle Club Members ---\n"; 
+        while (temp != nullptr) { 
+            cout << "ID: " << temp->id << "\n"; 
+            cout << "Name: " << temp->name << "\n"; 
+            cout << "Contact: " << temp->contact << "\n"; 
+            cout << "--------------------------\n"; 
+            temp = temp->next; 
+        } 
+    } 
+ 
+    // Search member by ID 
+    void searchMember(int id) { 
+        Node* temp = head; 
+        while (temp != nullptr) { 
+            if (temp->id == id) { 
+                cout << "\nMember Found!\n"; 
+                cout << "ID: " << temp->id << "\n"; 
+                cout << "Name: " << temp->name << "\n"; 
+                cout << "Contact: " << temp->contact << "\n"; 
+                return; 
+            } 
+            temp = temp->next; 
+        } 
+        cout << "Member with ID " << id << " not found.\n"; 
+    } 
+ 
+    // Delete member by ID 
+    void deleteMember(int id) { 
+        if (head == nullptr) { 
+            cout << "No members to delete.\n"; 
+            return; 
+        } 
+ 
+        if (head->id == id) { 
+            Node* temp = head; 
+            head = head->next; 
+            delete temp; 
+            cout << "Member deleted successfully!\n"; 
+            return; 
+        } 
+ 
+        Node* current = head; 
+        Node* previous = nullptr; 
+ 
+         
+ 
+  while (current != nullptr && current->id != id) { 
+            previous = current; 
+            current = current->next; 
+        } 
+ 
+        if (current == nullptr) { 
+            cout << "Member not found.\n"; 
+            return; 
+        } 
+ 
+        previous->next = current->next; 
+        delete current; 
+        cout << "Member deleted successfully!\n"; 
+    } 
+}; 
+ 
+int main() { 
+    PinnacleClub club; 
+    int choice, id; 
+    string name, contact; 
+ 
+    do { 
+        cout << "\n--- Pinnacle Club Menu ---\n"; 
+        cout << "1. Add Member\n"; 
+        cout << "2. Display Members\n"; 
+        cout << "3. Search Member\n"; 
+        cout << "4. Delete Member\n"; 
+        cout << "5. Exit\n"; 
+        cout << "Enter your choice: "; 
+        cin >> choice; 
+ 
+        switch (choice) { 
+        case 1: 
+            cout << "Enter Member ID: "; 
+            cin >> id; 
+            cin.ignore(); 
+            cout << "Enter Name: "; 
+            getline(cin, name); 
+            cout << "Enter Contact: "; 
+            getline(cin, contact); 
+            club.addMember(id, name, contact); 
+            break; 
+ 
+        case 2: 
+            club.displayMembers(); 
+            break; 
+ 
+        case 3: 
+            cout << "Enter ID to search: "; 
+            cin >> id; 
+            club.searchMember(id); 
+            break; 
+ 
+       
+ 
+ 
+  case 4: 
+            cout << "Enter ID to delete: "; 
+            cin >> id; 
+            club.deleteMember(id); 
+            break; 
+ 
+        case 5: 
+            cout << "Exiting... Thank you!\n"; 
+            break; 
+ 
+        default: 
+            cout << "Invalid choice! Try again.\n"; 
+        } 
+ 
+    } while (choice != 5); 
+ 
+    return 0; 
+}

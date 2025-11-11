@@ -1,0 +1,92 @@
+#include <iostream> 
+#include <stack> 
+#include <string> 
+#include <cctype>  // for isdigit and isalpha 
+using namespace std; 
+ 
+// Function to return precedence of operators 
+int precedence(char op) { 
+    if (op == '+' || op == '-') return 1; 
+    if (op == '*' || op == '/') return 2; 
+    if (op == '^') return 3; 
+    return 0; 
+} 
+ 
+// Function to perform arithmetic operations 
+int applyOperation(int a, int b, char op) { 
+    switch (op) { 
+        case '+': return a + b; 
+        case '-': return a - b; 
+        case '*': return a * b; 
+        case '/': return a / b; 
+    } 
+    return 0; 
+} 
+ 
+// Function to convert infix to postfix 
+string infixToPostfix(string infix) { 
+    stack<char> s; 
+    string postfix = ""; 
+ 
+    for (char c : infix) { 
+        if (isalnum(c)) { 
+            postfix += c;  // Operand goes directly to output 
+        } 
+        else if (c == '(') { 
+            s.push(c); 
+        } 
+        else if (c == ')') { 
+            while (!s.empty() && s.top() != '(') { 
+                postfix += s.top(); 
+                s.pop(); 
+            } 
+            s.pop(); // pop '(' 
+        } 
+        else { // Operator encountered 
+            while (!s.empty() && precedence(s.top()) >= precedence(c)) { 
+                postfix += s.top(); 
+                s.pop(); 
+            } 
+            s.push(c); 
+        } 
+    } 
+ 
+    // Pop remaining operators 
+    while (!s.empty()) { 
+        postfix += s.top(); 
+        s.pop(); 
+    } 
+ 
+    return postfix; 
+} 
+ 
+// Function to evaluate postfix expression 
+int evaluatePostfix(string postfix) { 
+    stack<int> s; 
+    for (char c : postfix) { 
+        if (isdigit(c)) { 
+            s.push(c - '0');  // Convert char to int 
+        } 
+        else { 
+            int val2 = s.top(); s.pop(); 
+            int val1 = s.top(); s.pop(); 
+            s.push(applyOperation(val1, val2, c)); 
+        } 
+    } 
+    return s.top(); 
+} 
+ 
+// Main program 
+int main() { 
+    string infix; 
+    cout << "Enter an infix expression (use single-digit numbers only): "; 
+    cin >> infix; 
+ 
+    string postfix = infixToPostfix(infix); 
+    cout << "Postfix Expression: " << postfix << endl; 
+ 
+    int result = evaluatePostfix(postfix); 
+    cout << "Evaluation Result: " << result << endl; 
+ 
+    return 0; 
+}
