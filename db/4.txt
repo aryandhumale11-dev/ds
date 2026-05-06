@@ -1,0 +1,101 @@
+-- STEP 1: CREATE DATABASE
+
+CREATE DATABASE CustomerOrderDB;
+
+USE CustomerOrderDB;
+
+--------------------------------------------------
+
+-- STEP 2: CREATE TABLES
+
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    CustomerName VARCHAR(50),
+    City VARCHAR(50)
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    OrderDate DATE,
+    CustomerID INT,
+    Amount INT
+);
+
+--------------------------------------------------
+
+-- STEP 3: INSERT DATA
+
+INSERT INTO Customers VALUES
+(101, 'Amit', 'Pune'),
+(102, 'Sneha', 'Mumbai'),
+(103, 'Rahul', 'Delhi'),
+(104, 'Priya', 'Bangalore'),
+(105, 'Karan', 'Chennai');
+
+INSERT INTO Orders VALUES
+(201, '2026-01-10', 101, 5000),
+(202, '2026-01-15', 102, 3000),
+(203, '2026-01-18', 101, 2000),
+(204, '2026-01-20', 106, 4500),
+(205, '2026-01-25', 103, 2500);
+
+--------------------------------------------------
+
+-- STEP 4: DISPLAY TABLES
+
+SELECT * FROM Customers;
+
+SELECT * FROM Orders;
+
+--------------------------------------------------
+
+-- STEP 5: INNER JOIN
+
+SELECT Customers.CustomerName,
+       Orders.OrderID,
+       Orders.Amount
+FROM Customers
+INNER JOIN Orders
+ON Customers.CustomerID = Orders.CustomerID;
+
+--------------------------------------------------
+
+-- STEP 6: LEFT JOIN
+
+SELECT Customers.CustomerName,
+       Orders.OrderID,
+       Orders.Amount
+FROM Customers
+LEFT JOIN Orders
+ON Customers.CustomerID = Orders.CustomerID;
+
+--------------------------------------------------
+
+-- STEP 7: RIGHT JOIN
+
+SELECT Customers.CustomerName,
+       Orders.OrderID,
+       Orders.Amount
+FROM Customers
+RIGHT JOIN Orders
+ON Customers.CustomerID = Orders.CustomerID;
+
+--------------------------------------------------
+
+-- STEP 8: FULL OUTER JOIN
+
+SELECT Customers.CustomerName,
+       Orders.OrderID,
+       Orders.Amount
+FROM Customers
+LEFT JOIN Orders
+ON Customers.CustomerID = Orders.CustomerID
+
+UNION
+
+SELECT Customers.CustomerName,
+       Orders.OrderID,
+       Orders.Amount
+FROM Customers
+RIGHT JOIN Orders
+ON Customers.CustomerID = Orders.CustomerID;

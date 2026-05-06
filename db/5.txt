@@ -1,0 +1,106 @@
+-- STEP 1: CREATE DATABASE
+
+CREATE DATABASE SalesDB;
+
+USE SalesDB;
+
+--------------------------------------------------
+
+-- STEP 2: CREATE TABLES
+
+-- Salesperson Table
+
+CREATE TABLE Salesperson (
+    sp_id INT PRIMARY KEY,
+    sp_name VARCHAR(50),
+    city VARCHAR(50)
+);
+
+-- Sales Table
+
+CREATE TABLE Sales (
+    sale_id INT PRIMARY KEY,
+    product_name VARCHAR(50),
+    quantity INT,
+    price INT,
+    sp_id INT,
+    FOREIGN KEY (sp_id) REFERENCES Salesperson(sp_id)
+);
+
+--------------------------------------------------
+
+-- STEP 3: INSERT SAMPLE DATA
+
+INSERT INTO Salesperson VALUES
+(1, 'Rahul', 'Pune'),
+(2, 'Priya', 'Mumbai'),
+(3, 'Amit', 'Delhi');
+
+--------------------------------------------------
+
+-- STEP 4: CREATE STORED PROCEDURE
+
+DELIMITER //
+
+CREATE PROCEDURE Add_Sale(
+    IN p_sale_id INT,
+    IN p_product_name VARCHAR(50),
+    IN p_quantity INT,
+    IN p_price INT,
+    IN p_sp_id INT
+)
+BEGIN
+    INSERT INTO Sales
+    VALUES(p_sale_id, p_product_name, p_quantity, p_price, p_sp_id);
+END //
+
+DELIMITER ;
+
+--------------------------------------------------
+
+-- STEP 5: EXECUTE PROCEDURE
+
+CALL Add_Sale(101, 'Laptop', 2, 50000, 1);
+
+CALL Add_Sale(102, 'Mouse', 5, 500, 2);
+
+CALL Add_Sale(103, 'Keyboard', 3, 1500, 1);
+
+-- DROP PROCEDURE
+
+DROP PROCEDURE Add_Sale;
+
+--------------------------------------------------
+
+-- STEP 6: CREATE FUNCTION
+
+DELIMITER //
+
+CREATE FUNCTION Total_Sales()
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE total INT;
+
+    SELECT SUM(quantity * price)
+    INTO total
+    FROM Sales;
+
+    RETURN total;
+END //
+
+DELIMITER ;
+
+--------------------------------------------------
+
+-- STEP 7: EXECUTE FUNCTION
+
+SELECT Total_Sales();
+
+--------------------------------------------------
+
+-- STEP 8: VIEW DATA
+
+SELECT * FROM Salesperson;
+
+SELECT * FROM Sales;

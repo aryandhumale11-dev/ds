@@ -1,0 +1,62 @@
+-- CREATE VIEW COMMAND
+
+CREATE VIEW Student_Report AS
+SELECT StudentID, Name, Email, Age, Address
+FROM Student;
+
+CREATE VIEW Course_Report AS
+SELECT CourseID, CourseName, Credits, InstructorID
+FROM Course;
+
+CREATE VIEW Instructor_Report AS
+SELECT InstructorID, Name, Email, Department
+FROM Instructor;
+
+--------------------------------------------------
+
+-- SELECT VIEW COMMAND
+
+SELECT * FROM Student_Report;
+
+SELECT * FROM Course_Report;
+
+SELECT * FROM Instructor_Report;
+
+--------------------------------------------------
+
+-- UPDATE VIEW COMMAND
+
+UPDATE Student_Report
+SET Age = 21
+WHERE StudentID = 101;
+
+--------------------------------------------------
+
+-- DELETE COMMAND
+
+DELETE FROM Student_Report
+WHERE StudentID = 102;
+
+--------------------------------------------------
+
+-- CREATE INDEX COMMAND
+
+CREATE INDEX idx_student
+ON Student(StudentID);
+
+CREATE INDEX idx_course
+ON Course(CourseID);
+
+CREATE INDEX idx_enroll_student
+ON Enrollment(StudentID);
+
+CREATE INDEX idx_enroll_course
+ON Enrollment(CourseID);
+
+--------------------------------------------------
+
+-- INDEX RETRIEVAL
+
+SELECT *
+FROM Student
+WHERE StudentID = 101;
