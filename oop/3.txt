@@ -1,0 +1,129 @@
+package Array_Operations;
+
+import java.util.Scanner;
+
+public class ArrayOperations {
+
+    // Method to display array elements
+    static void displayArray(int[] arr) {
+
+        System.out.print("Array Elements: ");
+
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+
+        System.out.println();
+    }
+
+    // Method to find maximum element
+    static int findMax(int[] arr) {
+
+        int max = arr[0];
+
+        for (int num : arr) {
+
+            if (num > max) {
+                max = num;
+            }
+        }
+
+        return max;
+    }
+
+    // Method to find minimum element
+    static int findMin(int[] arr) {
+
+        int min = arr[0];
+
+        for (int num : arr) {
+
+            if (num < min) {
+                min = num;
+            }
+        }
+
+        return min;
+    }
+
+    // Method to find sum of elements
+    static int findSum(int[] arr) {
+
+        int sum = 0;
+
+        for (int num : arr) {
+            sum += num;
+        }
+
+        return sum;
+    }
+
+    // Method to search an element
+    static boolean searchElement(int[] arr, int key) {
+
+        for (int num : arr) {
+
+            if (num == key) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Input array size
+        System.out.print("Enter number of elements: ");
+        int n = sc.nextInt();
+
+        int[] arr = new int[n];
+
+        // Input array elements
+        System.out.println("Enter array elements:");
+
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+
+        // Display array
+        displayArray(arr);
+
+        // Find maximum and minimum
+        int max = findMax(arr);
+        int min = findMin(arr);
+
+        // Find sum and average
+        int sum = findSum(arr);
+        double avg = (double) sum / n;
+
+        // Search element
+        System.out.print("Enter element to search: ");
+        int key = sc.nextInt();
+
+        boolean found = searchElement(arr, key);
+
+        // Display results
+        System.out.println("\n===== RESULTS =====");
+
+        System.out.println("Maximum Element: " + max);
+
+        System.out.println("Minimum Element: " + min);
+
+        System.out.println("Sum of elements: " + sum);
+
+        System.out.println("Average of elements: " + avg);
+
+        if (found) {
+            System.out.println("Element " + key + " is FOUND in the array.");
+        } else {
+            System.out.println("Element " + key + " is NOT found in the array.");
+        }
+
+        System.out.println("===================");
+
+        sc.close();
+    }
+}

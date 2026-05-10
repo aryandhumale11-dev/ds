@@ -1,0 +1,109 @@
+package Calculator;
+
+import java.util.Scanner;
+
+public class RobustCalculator {
+
+    public static void main(String[] args) {
+
+        // Create Scanner object for input
+        Scanner sc = new Scanner(System.in);
+
+        // Controls calculator loop
+        boolean continueCalc = true;
+
+        // Heading
+        System.out.println("===== Robust Java Calculator =====");
+
+        // Main loop
+        while (continueCalc) {
+
+            try {
+
+                // Display menu
+                System.out.println("\nChoose an operation:");
+                System.out.println("1. Addition (+)");
+                System.out.println("2. Subtraction (-)");
+                System.out.println("3. Multiplication (*)");
+                System.out.println("4. Division (/)");
+                System.out.println("5. Exit");
+
+                // Take choice
+                System.out.print("Enter your choice: ");
+                int choice = Integer.parseInt(sc.nextLine());
+
+                // Exit option
+                if (choice == 5) {
+                    System.out.println("Exiting calculator. Thank you!");
+                    break;
+                }
+
+                // Input numbers
+                System.out.print("Enter first number: ");
+                double num1 = Double.parseDouble(sc.nextLine());
+
+                System.out.print("Enter second number: ");
+                double num2 = Double.parseDouble(sc.nextLine());
+
+                // Store result
+                double result = 0;
+
+                // Tracks valid operation
+                boolean validOperation = true;
+
+                // Perform operation
+                switch (choice) {
+
+                    case 1:
+                        result = num1 + num2;
+                        break;
+
+                    case 2:
+                        result = num1 - num2;
+                        break;
+
+                    case 3:
+                        result = num1 * num2;
+                        break;
+
+                    case 4:
+                        if (Math.abs(num2) < 0.000001) {
+                            System.out.println("Error: Division by zero is not allowed!");
+                            validOperation = false;
+                        } else {
+                            result = num1 / num2;
+                        }
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice! Please select a valid operation.");
+                        validOperation = false;
+                }
+
+                // Display result
+                if (validOperation) {
+                    System.out.println("Result: " + result);
+                }
+
+                // Ask to continue
+                System.out.print("\nDo you want to perform another calculation? (yes/no): ");
+                String again = sc.nextLine().trim().toLowerCase();
+
+                if (!again.equals("yes")) {
+                    continueCalc = false;
+                    System.out.println("Calculator closed. Goodbye!");
+                }
+
+            } catch (NumberFormatException e) {
+
+                // Handle invalid numeric input
+                System.out.println("Error: Please enter valid numeric values!");
+            }
+
+            System.out.println("--------------------------------------");
+        }
+
+        // Close scanner
+        sc.close();
+    }
+}

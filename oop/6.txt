@@ -1,0 +1,72 @@
+package MultipleClasses_Interface_Polymorphism_Example;
+
+// Interface
+interface Shape {
+
+    void draw();
+
+    double area();
+}
+
+// Circle class implementing Shape
+class Circle implements Shape {
+
+    double radius;
+
+    Circle(double radius) {
+        this.radius = radius;
+    }
+
+    public void draw() {
+        System.out.println("Drawing a Circle");
+    }
+
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+// Rectangle class implementing Shape
+class Rectangle implements Shape {
+
+    double length, width;
+
+    Rectangle(double length, double width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    public void draw() {
+        System.out.println("Drawing a Rectangle");
+    }
+
+    public double area() {
+        return length * width;
+    }
+}
+
+// Main class
+public class InterfacePolymorphismDemo {
+
+    public static void main(String[] args) {
+
+        // Interface reference
+        Shape s;
+
+        // Circle object
+        s = new Circle(4.5);
+
+        s.draw();
+
+        System.out.println("Circle Area: " + s.area());
+
+        System.out.println();
+
+        // Rectangle object
+        s = new Rectangle(5, 8);
+
+        s.draw();
+
+        System.out.println("Rectangle Area: " + s.area());
+    }
+}

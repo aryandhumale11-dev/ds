@@ -1,0 +1,234 @@
+package EmployeeManagementSystemJDBC;
+
+import java.sql.*;
+import java.util.Scanner;
+
+public class EmployeeManagement {
+
+    // Database connection details
+    static final String URL =
+        "jdbc:mysql://localhost:3308/employee_db";
+
+    static final String USER = "root";
+
+    static final String PASSWORD = "root";
+
+    public static void main(String[] args) {
+
+        try (
+            Connection conn =
+                DriverManager.getConnection(URL, USER, PASSWORD)
+        ) {
+
+            Scanner sc = new Scanner(System.in);
+
+            int choice;
+
+            do {
+
+                System.out.println(
+                    "\n===== EMPLOYEE MANAGEMENT SYSTEM ====="
+                );
+
+                System.out.println("1. Add Employee");
+                System.out.println("2. Update Employee");
+                System.out.println("3. Delete Employee");
+                System.out.println("4. View All Employees");
+                System.out.println("5. Exit");
+
+                System.out.print("Enter choice: ");
+
+                choice = sc.nextInt();
+
+                switch (choice) {
+
+                    case 1:
+                        addEmployee(conn, sc);
+                        break;
+
+                    case 2:
+                        updateEmployee(conn, sc);
+                        break;
+
+                    case 3:
+                        deleteEmployee(conn, sc);
+                        break;
+
+                    case 4:
+                        viewEmployees(conn);
+                        break;
+
+                    case 5:
+                        System.out.println("Exiting...");
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice!");
+                }
+
+            } while (choice != 5);
+
+            sc.close();
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                "Database Error: " + e.getMessage()
+            );
+        }
+    }
+
+    // Add Employee
+    public static void addEmployee(
+        Connection conn,
+        Scanner sc
+    ) {
+
+        try {
+
+            String sql =
+                "INSERT INTO employees (id, name, department, salary) VALUES (?, ?, ?, ?)";
+
+            PreparedStatement ps =
+                conn.prepareStatement(sql);
+
+            System.out.print("Enter Employee ID: ");
+            ps.setInt(1, sc.nextInt());
+
+            System.out.print("Enter Employee Name: ");
+            ps.setString(2, sc.next());
+
+            System.out.print("Enter Employee Department: ");
+            ps.setString(3, sc.next());
+
+            System.out.print("Enter Employee Salary: ");
+            ps.setDouble(4, sc.nextDouble());
+
+            int rows = ps.executeUpdate();
+
+            System.out.println(
+                rows + " employee added successfully!"
+            );
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                "Error adding employee: " +
+                e.getMessage()
+            );
+        }
+    }
+
+    // Update Employee
+    public static void updateEmployee(
+        Connection conn,
+        Scanner sc
+    ) {
+
+        try {
+
+            String sql =
+                "UPDATE employees SET name = ?, department = ?, salary = ? WHERE id = ?";
+
+            PreparedStatement ps =
+                conn.prepareStatement(sql);
+
+            System.out.print("Enter ID to update: ");
+            ps.setInt(4, sc.nextInt());
+
+            System.out.print("Enter New Name: ");
+            ps.setString(1, sc.next());
+
+            System.out.print("Enter New Department: ");
+            ps.setString(2, sc.next());
+
+            System.out.print("Enter New Salary: ");
+            ps.setDouble(3, sc.nextDouble());
+
+            int rows = ps.executeUpdate();
+
+            System.out.println(
+                rows + " employee updated!"
+            );
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                "Error updating employee: " +
+                e.getMessage()
+            );
+        }
+    }
+
+    // Delete Employee
+    public static void deleteEmployee(
+        Connection conn,
+        Scanner sc
+    ) {
+
+        try {
+
+            String sql =
+                "DELETE FROM employees WHERE id = ?";
+
+            PreparedStatement ps =
+                conn.prepareStatement(sql);
+
+            System.out.print("Enter ID to delete: ");
+
+            ps.setInt(1, sc.nextInt());
+
+            int rows = ps.executeUpdate();
+
+            System.out.println(
+                rows + " employee deleted!"
+            );
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                "Error deleting employee: " +
+                e.getMessage()
+            );
+        }
+    }
+
+    // View Employees
+    public static void viewEmployees(
+        Connection conn
+    ) {
+
+        try {
+
+            String sql =
+                "SELECT * FROM employees";
+
+            PreparedStatement ps =
+                conn.prepareStatement(sql);
+
+            ResultSet rs =
+                ps.executeQuery();
+
+            System.out.println(
+                "\n--- Employee List ---"
+            );
+
+            while (rs.next()) {
+
+                System.out.println(
+                    "ID: " + rs.getInt("id") +
+                    ", Name: " + rs.getString("name") +
+                    ", Dept: " + rs.getString("department") +
+                    ", Salary: " + rs.getDouble("salary")
+                );
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                "Error viewing employees: " +
+                e.getMessage()
+            );
+        }
+    }
+}

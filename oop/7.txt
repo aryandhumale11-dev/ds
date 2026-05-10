@@ -1,0 +1,36 @@
+package Abstract_Class_Example;
+
+// Abstract superclass
+abstract class Vehicle {
+
+    // Abstract method
+    abstract void start();
+
+    // Normal method
+    void stop() {
+        System.out.println("Vehicle has stopped.");
+    }
+}
+
+// Subclass implementing abstract method
+class Car extends Vehicle {
+
+    // Providing implementation
+    void start() {
+        System.out.println("Car is starting with a key ignition.");
+    }
+}
+
+// Main class
+public class AbstractClassDemo {
+
+    public static void main(String[] args) {
+
+        // Parent reference and child object
+        Vehicle v = new Car();
+
+        // Calling methods
+        v.start();
+        v.stop();
+    }
+}
